@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import api from '../../shared/api/client.js';
 import { formatPrice } from '../../shared/utils/helpers.js';
+import { toast } from 'react-toastify';
 
 export default function UserHomePage() {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -24,9 +25,11 @@ export default function UserHomePage() {
       setSelectedModifiers({});
       setQuantity(1);
       setError('');
+      toast.success('🎉 Đã thêm vào giỏ hàng!'); 
     },
     onError: (err) => {
       setError(err.response?.data?.error?.message || 'Lỗi thêm vào giỏ hàng');
+      toast.error('❌ Có lỗi xảy ra khi thêm vào giỏ hàng');
     },
   });
 

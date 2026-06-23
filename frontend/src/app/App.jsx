@@ -15,10 +15,14 @@ import AdminOrdersPage from '../features/admin/AdminOrdersPage.jsx';
 import AdminProductsPage from '../features/admin/AdminProductsPage.jsx';
 import AdminUsersPage from '../features/admin/AdminUsersPage.jsx';
 import AdminSettingsPage from '../features/admin/AdminSettingsPage.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   return (
     <AuthProvider>
+      <ToastContainer autoClose={2000} position="top-center" />
+
       <Routes>
         {/* Guest routes */}
         <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
@@ -44,6 +48,7 @@ export default function App() {
 
         {/* Default redirect */}
         <Route path="*" element={<Navigate to="/login" replace />} />
+
       </Routes>
     </AuthProvider>
   );

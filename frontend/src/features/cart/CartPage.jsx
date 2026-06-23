@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import api from '../../shared/api/client.js';
 import { formatPrice, formatTime } from '../../shared/utils/helpers.js';
+import { toast } from 'react-toastify';
 
 export default function CartPage() {
   // Hàm định dạng ngày thành YYYY-MM-DD
@@ -58,7 +59,10 @@ export default function CartPage() {
   const checkoutMutation = useMutation({
     mutationFn: (data) => api.patch('/cart/checkout-details', data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart'] }),
-    onError: (err) => setCheckoutError(err.response?.data?.error?.message || 'Lỗi'),
+    onError: (err) => {
+      setCheckoutError(err.response?.data?.error?.message || 'Lỗi')
+      toast.error(err.response?.data?.error?.message || 'Lỗi đặt hàng');
+    },
   });
 
   const orderMutation = useMutation({
@@ -67,9 +71,14 @@ export default function CartPage() {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       setOrderSuccess(`Đặt hàng thành công! Mã đơn: ${res.data.data.order.orderNumber}`);
+      toast.success('🎉 Đặt hàng thành công!');
+
       // setTimeout(() => navigate('/user/orders'), 2000);
     },
-    onError: (err) => setCheckoutError(err.response?.data?.error?.message || 'Lỗi đặt hàng'),
+    onError: (err) => {
+      setCheckoutError(err.response?.data?.error?.message || 'Lỗi đặt hàng');
+      toast.error(err.response?.data?.error?.message || 'Lỗi đặt hàng');
+    },
   });
 
   const handleSubmitOrder = async () => {
