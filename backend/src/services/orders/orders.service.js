@@ -23,7 +23,7 @@ export async function createOrder(userId) {
   }
 
   if (!cart.diningMode || !cart.pickupTime) {
-    throw new BadRequestError('Please set dining mode and pickup time before ordering');
+    throw new BadRequestError('Vui lòng chọn mang đi hay tại chỗ');
   }
 
   // Validate pickup time
@@ -233,7 +233,7 @@ async function validatePickupTime(pickupDate) {
   }
 
   if (pickupDate <= new Date()) {
-    throw new BadRequestError('Pickup time must be in the future');
+    throw new BadRequestError('Vui lòng chọn thời gian trong tương lai');
   }
 
   const formatter = new Intl.DateTimeFormat('en-CA', {

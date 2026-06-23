@@ -3,9 +3,9 @@ import 'dotenv/config';
 const config = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT, 10) || 3000,
-  mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/canteen_mvp',
+  mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/cantee_db',
   session: {
-    cookieName: process.env.SESSION_COOKIE_NAME || 'canteen_sid',
+    cookieName: process.env.SESSION_COOKIE_NAME || 'cantee_sid',
     secret: process.env.SESSION_SECRET || 'dev-secret-change-in-production',
     ttlDays: parseInt(process.env.SESSION_TTL_DAYS, 10) || 7,
   },

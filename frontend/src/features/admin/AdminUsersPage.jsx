@@ -32,13 +32,13 @@ export default function AdminUsersPage() {
 
   const toggleStatus = (user) => {
     const endpoint = user.status === 'active' ? 'disable' : 'enable';
-    api.post(`/users/${user._id}/${endpoint}`).then(() => {
+    api.post(`/users/${user.id}/${endpoint}`).then(() => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
     });
   };
 
   const changeRole = (user, newRole) => {
-    updateMutation.mutate({ id: user._id, data: { role: newRole } });
+    updateMutation.mutate({ id: user.id, data: { role: newRole } });
   };
 
   if (isLoading) {
@@ -74,7 +74,7 @@ export default function AdminUsersPage() {
           </thead>
           <tbody className="divide-y">
             {users.map((user) => (
-              <tr key={user._id} className="hover:bg-gray-50">
+              <tr key={user.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3 font-medium text-gray-800">{user.fullName}</td>
                 <td className="px-4 py-3 text-gray-500">{user.email}</td>
                 <td className="px-4 py-3">

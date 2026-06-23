@@ -1211,8 +1211,8 @@ Seed products are required for development environments and must not be inserted
 |---|---:|---|---|
 | `NODE_ENV` | Yes | `development` | Runtime environment. |
 | `PORT` | Yes | `3000` | Backend port. |
-| `MONGODB_URI` | Yes | `mongodb://localhost:27017/canteen_mvp` | MongoDB connection. |
-| `SESSION_COOKIE_NAME` | Yes | `canteen_sid` | Session cookie name. |
+| `MONGODB_URI` | Yes | `mongodb://localhost:27017/cantee_db` | MongoDB connection. |
+| `SESSION_COOKIE_NAME` | Yes | `cantee_sid` | Session cookie name. |
 | `SESSION_SECRET` | Yes | random string | Used for hashing/signing where applicable. |
 | `SESSION_TTL_DAYS` | No | `7` | Session expiration days. |
 | `FRONTEND_ORIGIN` | Yes | `http://localhost:5173` | Allowed CORS origin. |

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext.jsx';
 
 export default function Layout({ children }) {
@@ -41,13 +41,20 @@ export default function Layout({ children }) {
                 🍜 Canteen
               </Link>
               {links.map((link) => (
-                <Link
+                <NavLink
                   key={link.to}
                   to={link.to}
-                  className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                  end
+                  className={({ isActive }) => 
+                    `text-sm transition-colors ${
+                      isActive 
+                        ? 'text-blue-600 font-bold' // Thêm font-bold và màu xanh khi ĐANG CHỌN
+                        : 'text-gray-600 hover:text-blue-600' // Trạng thái bình thường
+                    }`
+                  }
                 >
                   {link.label}
-                </Link>
+                </NavLink>
               ))}
             </div>
             {user && (

@@ -261,7 +261,7 @@ async function validatePickupTime(pickupDate) {
 
   // Check not in past
   if (pickupDate <= new Date()) {
-    throw new BadRequestError('Pickup time must be in the future');
+    throw new BadRequestError('Vui lòng chọn thời gian trong tương lai');
   }
 
   // Convert to canteen timezone
@@ -291,7 +291,7 @@ async function validatePickupTime(pickupDate) {
   }
 
   if (!daySchedule.isOpen) {
-    throw new BadRequestError('Canteen is closed on this day');
+    throw new BadRequestError('Căng tin đóng cửa vào ngày này');
   }
 
   const [openH, openM] = daySchedule.openTime.split(':').map(Number);
@@ -300,10 +300,10 @@ async function validatePickupTime(pickupDate) {
   const closeMinutes = closeH * 60 + closeM;
 
   if (localTimeMinutes < openMinutes) {
-    throw new BadRequestError(`Pickup time is before opening time (${daySchedule.openTime})`);
+    throw new BadRequestError(`Chưa đến giờ mở cửa (${daySchedule.openTime})`);
   }
 
   if (localTimeMinutes > closeMinutes) {
-    throw new BadRequestError(`Pickup time is after closing time (${daySchedule.closeTime})`);
+    throw new BadRequestError(`Đã qua giờ đóng cửa (${daySchedule.closeTime})`);
   }
 }

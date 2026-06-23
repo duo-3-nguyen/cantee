@@ -5,11 +5,28 @@ import api from '../../shared/api/client.js';
 import { formatPrice, formatTime } from '../../shared/utils/helpers.js';
 
 export default function CartPage() {
+  // Hàm định dạng ngày thành YYYY-MM-DD
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // Hàm định dạng giờ thành HH:MM
+  const getCurrentTime = () => {
+    const today = new Date();
+    const hours = String(today.getHours()).padStart(2, '0');
+    const minutes = String(today.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [diningMode, setDiningMode] = useState('takeaway');
-  const [pickupDate, setPickupDate] = useState('');
-  const [pickupTime, setPickupTime] = useState('');
+  const [pickupDate, setPickupDate] = useState(getTodayDate());
+  const [pickupTime, setPickupTime] = useState(getCurrentTime());
   const [checkoutError, setCheckoutError] = useState('');
   const [orderSuccess, setOrderSuccess] = useState('');
 
@@ -50,22 +67,21 @@ export default function CartPage() {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       setOrderSuccess(`Đặt hàng thành công! Mã đơn: ${res.data.data.order.orderNumber}`);
-      setTimeout(() => navigate('/user/orders'), 2000);
+      // setTimeout(() => navigate('/user/orders'), 2000);
     },
     onError: (err) => setCheckoutError(err.response?.data?.error?.message || 'Lỗi đặt hàng'),
   });
 
-  const handleSetCheckoutDetails = () => {
+  const handleSubmitOrder = async () => {
     setCheckoutError('');
     if (!pickupDate || !pickupTime) {
       setCheckoutError('Vui lòng chọn ngày và giờ nhận hàng');
       return;
     }
-    const isoString = new Date(`${pickupDate}T${pickupTime}:00`).toISOString();
-    checkoutMutation.mutate({ diningMode, pickupTime: isoString });
-  };
 
-  const handleSubmitOrder = () => {
+    const isoString = new Date(`${pickupDate}T${pickupTime}:00`).toISOString();
+    await checkoutMutation.mutateAsync({ diningMode, pickupTime: isoString });
+  
     setCheckoutError('');
     orderMutation.mutate();
   };
@@ -194,15 +210,6 @@ export default function CartPage() {
                 })}
               </div>
             )}
-
-            <button
-              onClick={handleSetCheckoutDetails}
-              disabled={checkoutMutation.isPending}
-              className="w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium mb-2"
-            >
-              Cập nhật thông tin
-            </button>
-
             <div className="border-t pt-3 mt-3">
               <div className="flex justify-between text-lg font-bold text-gray-800 mb-4">
                 <span>Tổng cộng</span>
@@ -211,7 +218,7 @@ export default function CartPage() {
 
               <button
                 onClick={handleSubmitOrder}
-                disabled={orderMutation.isPending || !cart.diningMode}
+                disabled={orderMutation.isPending}
                 className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 font-medium"
               >
                 {orderMutation.isPending ? 'Đang đặt hàng...' : 'Đặt hàng (Tiền mặt)'}
