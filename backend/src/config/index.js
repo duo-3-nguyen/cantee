@@ -11,8 +11,8 @@ const config = {
   },
   frontendOrigin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
   seed: {
-    adminEmail: process.env.SEED_ADMIN_EMAIL || 'admin@example.com',
-    adminPassword: process.env.SEED_ADMIN_PASSWORD || 'Admin@123456',
+    adminEmail: process.env.SEED_ADMIN_EMAIL || 'admin@email.com',
+    adminPassword: process.env.SEED_ADMIN_PASSWORD || '12345678',
     adminFullName: process.env.SEED_ADMIN_FULL_NAME || 'System Admin',
   },
 };
