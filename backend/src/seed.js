@@ -12,6 +12,40 @@ async function seed() {
 
   logger.info('Seeding database...');
 
+  // ducttape
+  const defaultUserEmail = "user@email.com";
+  const existingUser = await User.findOne({ email:  defaultUserEmail});
+  if (!existingUser) {
+    const passwordHash = await argon2.hash("12345678");
+    await User.create({
+      email: defaultUserEmail,
+      passwordHash,
+      fullName: "Nguyễn Văn User",
+      role: 'user',
+      status: 'active',
+    });
+    logger.info(`User created: ${defaultUserEmail}`);
+  } else {
+    logger.info('Default user already exists, skipping');
+  }
+
+  const defaultStaffEmail = "staff@email.com";
+  const existingStaff = await User.findOne({ email: defaultStaffEmail});
+  if (!existingStaff) {
+    const passwordHash = await argon2.hash("12345678");
+    await User.create({
+      email: defaultStaffEmail,
+      passwordHash,
+      fullName: "Nguyễn Văn Staff",
+      role: 'staff',
+      status: 'active',
+    });
+    logger.info(`User created: ${defaultStaffEmail}`);
+  } else {
+    logger.info('Default staff already exists, skipping');
+  }
+
+
   // Seed admin user
   const existingAdmin = await User.findOne({ email: config.seed.adminEmail });
   if (!existingAdmin) {
